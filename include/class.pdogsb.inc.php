@@ -17,7 +17,7 @@
 
 class PdoGsb{   		
       	private static $serveur='mysql:host=localhost';
-      	private static $bdd='dbname=gsbV2';   		
+      	private static $bdd='dbname=gsb_frais_new';   		
       	private static $user='root' ;    		
       	private static $mdp='' ;	
 		private static $monPdo;
@@ -42,10 +42,11 @@ class PdoGsb{
  */
 	public  static function getPdoGsb(){
 		if(PdoGsb::$monPdoGsb==null){
-			PdoGsb::$monPdoGsb= new PdoGsb();
+			PdoGsb::$monPdoGsb= new PdoGsb(PdoGsb::$serveur,PdoGsb::$bdd,PdoGsb::$user, PdoGsb::$mdp);
 		}
 		return PdoGsb::$monPdoGsb;  
 	}
+        
 /**
  * Retourne les informations d'un visiteur
  
@@ -54,10 +55,26 @@ class PdoGsb{
  * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
 */
 	public function getInfosVisiteur($login, $mdp){
-		$req = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
-		where visiteur.login='$login' and visiteur.mdp='$mdp'";
-		$rs = PdoGsb::$monPdo->query($req);
-		$ligne = $rs->fetch();
+            
+            $req = "select type from utilisateur where utilisateur.login='".$login."' and utilisateur.mdp='".$mdp."'";
+            $rs = PdoGsb::$monPdo->query($req);
+            $type = $rs->fetch(pdo::FETCH_ASSOC);
+            
+            if($type['type'] =="C")
+            {
+               $requete = "select gestionnaire.id as id, gestionnaire.nom as nom, gestionnaire.prenom as prenom from gestionnaire 
+	       where gestionnaire.login='".$login."'";
+               $rs1 = PdoGsb::$monPdo->query($requete);
+               $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
+            }
+            else if($type['type'] =="V")
+            {
+               $requete = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
+	       where visiteur.login='".$login."'";
+               $rs1 = PdoGsb::$monPdo->query($requete);
+               $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
+            }
+            
 		return $ligne;
 	}
 
