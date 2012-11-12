@@ -30,9 +30,10 @@ class PdoGsb{
     	PdoGsb::$monPdo = new PDO(PdoGsb::$serveur.';'.PdoGsb::$bdd, PdoGsb::$user, PdoGsb::$mdp); 
 		PdoGsb::$monPdo->query("SET CHARACTER SET utf8");
 	}
-	public function _destruct(){
+	public function _destruct()
+                {
 		PdoGsb::$monPdo = null;
-	}
+                }
 /**
  * Fonction statique qui crée l'unique instance de la classe
  
