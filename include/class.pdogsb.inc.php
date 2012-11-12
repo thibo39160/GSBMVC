@@ -67,6 +67,7 @@ class PdoGsb{
 	       where gestionnaire.login='".$login."'";
                $rs1 = PdoGsb::$monPdo->query($requete);
                $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
+               $ligne['type']="C";
             }
             else if($type['type'] =="V")
             {
@@ -74,6 +75,7 @@ class PdoGsb{
 	       where visiteur.login='".$login."'";
                $rs1 = PdoGsb::$monPdo->query($requete);
                $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
+               $ligne['type']="V";
             }
             
 		return $ligne;
