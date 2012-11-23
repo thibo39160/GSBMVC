@@ -2,8 +2,10 @@
 include("vues/v_sommaire.php");
 $action = $_REQUEST['action'];
 $idVisiteur = $_SESSION['idVisiteur'];
+
 switch($action){
-	case 'selectionnerMois':{
+	case 'selectionnerMois':
+        {
 		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		// on demande toutes les clés, et on prend la première,
@@ -13,11 +15,13 @@ switch($action){
 		include("vues/v_listeMois.php");
 		break;
 	}
-	case 'voirEtatFrais':{
+	case 'voirEtatFrais':
+        {
 		$leMois = $_REQUEST['lstMois']; 
 		$lesMois=$pdo->getLesMoisDisponibles($idVisiteur);
 		$moisASelectionner = $leMois;
 		include("vues/v_listeMois.php");
+                
 		$lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($idVisiteur,$leMois);
 		$lesFraisForfait= $pdo->getLesFraisForfait($idVisiteur,$leMois);
 		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur,$leMois);

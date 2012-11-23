@@ -289,6 +289,80 @@ class PdoGsb{
 		}
 		return $lesMois;
 	}
+        
+        
+ /**************************************************************************************************************************/
+        /*requete pour obtenir les mois qui ont une fiche de frais à l'état en cours*/
+        public function getLesMoisAvalider()
+        {
+           $requete = "select fichefrais.mois as mois from  fichefrais where idEtat='CR'
+		order by fichefrais.mois desc "; 
+           $result = PdoGsb::$monPdo->query($requete);
+           $ensembleMois =array();
+           $laLigne = $result->fetch();
+           while($laLigne != null)
+               {
+               $mois = $laLigne['mois'];
+			$numAnnee =substr( $mois,0,4);
+			$numMois =substr( $mois,4,2);
+                        $ensembleMois[$mois]=array(
+		     "mois"=>$mois,
+		    "numAnnee"  => $numAnnee,
+			"numMois"  => $numMois
+             );
+              $laLigne = $result->fetch();          
+           }
+           return $ensembleMois;
+        }
+        
+        public function getLesUtilisateurAvalider()
+        {
+            $requete2 = "select visiteur.id,visiteur.nom from visiteur inner join fichefrais on visiteur.id = fichefrais.idVisiteur where idEtat ='CR'
+            order by visiteur.id asc ";
+            $result = PdoGsb::$monPdo->query($requete2);
+            $ensembleUtilisateur =array();
+            $laLigne = $result->fetch();
+            while($laLigne != null)
+               {
+               $utilisateur = $laLigne['id'];
+               $utilisateurPrenom = $laLigne['nom'];
+                $ensembleUtilisateur[$utilisateur]=array(
+		     "id"=>$utilisateur,"nom"=>$utilisateurPrenom);
+                $laLigne = $result->fetch();
+               }
+               return $ensembleUtilisateur;
+        }
+        public function getLesFrais($idVisiteur,$idMois)
+        {
+            $requete3 = "select * from lignefraisforfait where lignefraisforfait.idVisiteur = '$idVisiteur' and lignefraisforfait.mois='$idMois'";
+            $res = PdoGsb::$monPdo->query($requete3);
+            $laLigne = $res->fetchALL();
+            $nb = count($laLigne);
+            return $nb;
+        }
+        public function ValidationParComptable($levisiteur,$leMois)
+        {
+            $requete4 = "UPDATE fichefrais set idEtat='VA' where fichefrais.idVisiteur= '$levisiteur' and fichefrais.mois='$leMois'";
+            $requete5 = "UPDATE fichefrais set dateModif= NOW() where fichefrais.idVisiteur= '$levisiteur' and fichefrais.mois='$leMois'";
+            PdoGsb::$monPdo->exec($requete4);
+            PdoGsb::$monPdo->exec($requete5);
+        }
+ /******************************************************************************************************************************/       
+        public function getLesVisiteursDisponibles()
+        {
+            $req2 = "select distinct(id,prenom) from visiteur inner join fichefrais on visiteur.id = fichefrais.idVisiteur where idEtat ='CR'";
+            $res2 = PdoGsb::$monPdo->query($req2);
+            $lesVisiteur =array();
+            $laLigne = $res2->fetch();
+            while($laLigne != null)	
+            {
+               $id = $laLigne['id']; 
+               $lesVisiteur["$id"]=array(
+               "id"=>"$id");
+               $laLigne = $res2->fetch(); 
+            }
+            return $lesVisiteur;
+        }
 /**
  * Retourne les informations d'une fiche de frais d'un visiteur pour un mois donné
  
