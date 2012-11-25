@@ -48,6 +48,52 @@ class PdoGsb{
 		return PdoGsb::$monPdoGsb;  
 	}
         
+        
+ //-------------------MIKAFUNCTION-------------------------------------------
+//---------------------------------------------------------------------------------------        
+ /*
+ * Retourne les informations d'un visiteur si ça fiche de frais a été validée 
+*/
+       public function getInfosVisiteurValide(){
+           
+            $requete = "select visiteur.id, visiteur.nom, fichefrais.idEtat from visiteur INNER JOIN fichefrais on visiteur.id = fichefrais.idVisiteur where idEtat='VA' order by visiteur.id asc";
+            $rs1 = PdoGsb::$monPdo->query($requete);
+            $ensembleUtilisateur = array();
+            $laLigne = $rs1->fetch();
+            while ($laLigne != null)
+            {
+                $utilisateur = $laLigne['id'];
+                $utilisateurNom = $laLigne['nom'];
+                $utilisateurEtat = $laLigne['idEtat'];
+                $ensembleUtilisateur[$utilisateur]=array("id"=>$utilisateur,"nom"=>$utilisateurNom,"idEtat"=>$utilisateurEtat);
+                $laLigne = $rs1->fetch();
+            }
+            return $ensembleUtilisateur;           
+       }   
+       
+               
+//----------------------MIKAFUNCTION-------------------------------------
+//---------------------------------------------------------------------------------------
+        
+        public function getLesMoisDisponiblesVisiteurValide($Visiteur) {
+                $req = "select fichefrais.mois as mois, dateModif, montantValide from  fichefrais where fichefrais.idvisiteur ='$Visiteur' 
+		order by fichefrais.mois desc ";
+		$res = PdoGsb::$monPdo->query($req);
+                $lesMois =array();
+                $laLigne = $res->fetch();
+ 		while($laLigne != null)	{
+			$mois = $laLigne['mois'];
+			$numAnnee =substr( $mois,0,4);
+			$numMois =substr( $mois,4,2);
+                        $dateMofid = $laLigne['dateModif'];
+                        $montantValide = $laLigne['montantValide'];
+                        $lesMois[$mois]=array("mois"=>"$mois","numAnnee"=>$numAnnee,"numMois"=>$numMois,"dateModif"=>$dateMofid,"montantValide"=>$montantValide);
+                        $laLigne = $res->fetch(); 
+                }
+                return $lesMois;          
+       }  
+         
+        
 /**
  * Retourne les informations d'un visiteur
  
