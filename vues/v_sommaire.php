@@ -28,7 +28,7 @@
             else { 
                     ?>
            <li class="smenu">
-              <a href="index.php?uc=suivie&action=suivie" title="Suivie fiches de frais ">Suivie fiches de frais</a>
+              <a href="index.php?uc=suivie&action=selectionVisiteur" title="Suivie fiches de frais ">Suivie fiches de frais</a>
            </li>
            <li class="smenu">
               <a href="index.php?uc=validation&action=validation" title="Validation fiche de frais">Validation des fiche de frais</a>         

@@ -11,6 +11,7 @@ switch($action){
                
                 //Requete pour les mois
                 global $Visiteur;
+                echo $visiteur;
                 $lesMois=$pdo->getLesMoisDisponiblesVisiteurValide($Visiteur);
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
 		// on demande toutes les clés, et on prend la première,

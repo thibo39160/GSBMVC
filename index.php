@@ -22,7 +22,7 @@ switch($uc){
         case 'validation':{
 		include("controleurs/c_validation.php");break;
 	}
-        case 'suivie' :{
+        case 'suivie':{
 		include("controleurs/c_suivie.php");break; 
         }
 }
