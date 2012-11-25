@@ -4,17 +4,13 @@ $action = $_REQUEST['action'];
 $idVisiteur = $_SESSION['idVisiteur'];
 $unID;
 $unMois;
+$UnMontantTotalValide;
 switch($action){
         
-        case 'supprimerFrais':{
-		$idFrais = $_REQUEST['idFrais'];
-                $pdo->supprimerFraisHorsForfait($idFrais);
-                
-		break;
-	}
+        
 	case 'validation':
-        {
-               
+        {        
+            
 		$MoisAvalider=$pdo->getLesMoisAvalider();
                 $UtilisateurAvalider = $pdo->getLesUtilisateurAvalider();
 		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
@@ -63,20 +59,42 @@ switch($action){
 		$dateModif =  $lesInfosFicheFrais['dateModif'];
 		$dateModif =  dateAnglaisVersFrancais($dateModif);
                 
+                /*partie qui recupere les valeur des différents frais afin de les calculer*/
+                $LesForfaitEtape = $pdo->getValeurForfaitEtape();               
+                $LesFraisKilometrique = $pdo->getValeurFraisKilométrique();              
+                $LesFraisNuiteHotel = $pdo->getValeurForfaitNuiteHotel();               
+                $LesFraisRepasRestaurant = $pdo->getValeurForfaitNuiteRestaurant();
                 
-                include("vues/v_validationComptable.php");
+                $FraisEtapeUtilisateur = $pdo->getValeurFraisEtapeUtilisateur($levisiteur,$leMois);
+                $FraisKilometriqueUtilisateur = $pdo->getValeurFraisKilometriqueUtilisateur($levisiteur,$leMois);
+                $FraisNuiteHotelUtilisateur = $pdo->getValeurFraisNuiteHotelUtilisateur($levisiteur,$leMois);
+                $FraisRepasRestaurantUtilisateur = $pdo->getValeurFraisRepasRestaurantUtilisateur($levisiteur,$leMois); 
+                $TotalFraisHorsForfaitUtilisateur = $pdo->getValeurFraisHorsForfaitUtilisateur($levisiteur,$leMois);
+                $MontantTotalValide = (($LesForfaitEtape*$FraisEtapeUtilisateur)+($LesFraisKilometrique*$FraisKilometriqueUtilisateur)+($LesFraisNuiteHotel*$FraisNuiteHotelUtilisateur)+($LesFraisRepasRestaurant*$FraisRepasRestaurantUtilisateur)+$TotalFraisHorsForfaitUtilisateur);              
+                include("vues/v_validationComptable.php"); 
+                echo'Montant Valide: '.$MontantTotalValide;
                 include("vues/v_listeFraisForfaitComptable.php");
                 include("vues/v_listeFraisHorsForfaitComptable.php");              
                 }
                 break;
         }       
-                case 'validationComptable':
+         case 'validationComptable':
         {
+                
                 global $unID;
-                global $unMOIS;             
-                $pdo->ValidationParComptable($unID,$unMOIS); 
+                global $unMOIS;
+                global $UnMontantTotalValide;
+                $pdo->ValidationParComptable($unID,$unMOIS);
+                $pdo->MiseAjourMontantValide($UnMontantTotalValide,$unID,$unMOIS);
                 include("vues/v_ConfirmationValidationComptable.php");
                 break;
+	}
+        case 'supprimerFrais':
+        {
+		$idFrais = $_REQUEST['idFrais'];
+                $pdo->supprimerFraisHorsForfait($idFrais);
+                include("vues/v_ConfirmationSuppressionComptable.php");
+		break;
 	}
         
         

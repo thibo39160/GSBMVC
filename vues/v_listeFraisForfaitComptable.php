@@ -2,7 +2,9 @@
          
       <form method="POST"  action="index.php?uc=gererFrais&action=validerMajFraisForfait">
       <div class="corpsForm">
-          
+          <?php
+          ;
+          ?>
           <fieldset>
             <legend>Eléments forfaitisés
             </legend>

@@ -344,9 +344,80 @@ class PdoGsb{
         {
             $requete4 = "UPDATE fichefrais set idEtat='VA' where fichefrais.idVisiteur= '$levisiteur' and fichefrais.mois='$leMois'";
             $requete5 = "UPDATE fichefrais set dateModif= NOW() where fichefrais.idVisiteur= '$levisiteur' and fichefrais.mois='$leMois'";
+            
             PdoGsb::$monPdo->exec($requete4);
             PdoGsb::$monPdo->exec($requete5);
         }
+        public function getValeurForfaitEtape()
+        {
+            $requete10 = "select montant from fraisforfait where libelle ='Forfait Etape'";
+            $query = PdoGsb::$monPdo->query($requete10) ;
+            $data = $query->fetch();
+            return $data['montant'];    
+        }
+        public function getValeurFraisKilométrique()
+        {
+            $requete11 = "select montant from fraisforfait where libelle ='Frais Kilométrique'";
+            $query = PdoGsb::$monPdo->query($requete11) ;
+            $data = $query->fetch();
+            return $data['montant'];    
+        }
+        public function getValeurForfaitNuiteHotel()
+        {
+            $requete7 = "select montant from fraisforfait where libelle ='Nuitée Hôtel'";
+            $query = PdoGsb::$monPdo->query($requete7) ;
+            $data = $query->fetch();
+            return $data['montant'];    
+        }
+        public function getValeurForfaitNuiteRestaurant()
+        {        
+            $requete8 = "select montant from fraisforfait where libelle ='Repas Restaurant'";
+            $query = PdoGsb::$monPdo->query($requete8) ;
+            $data = $query->fetch();
+            return $data['montant'];           
+        }
+        public function getValeurFraisEtapeUtilisateur($visiteur,$mois)
+        
+        {        
+            $requete12 = "select quantite from lignefraisforfait where idFraisForfait = 'ETP' and mois = '$mois'  and idVisiteur = '$visiteur'";
+            $query = PdoGsb::$monPdo->query($requete12) ;
+            $data = $query->fetch();
+            return $data['quantite'];             
+        }
+        public function getValeurFraisKilometriqueUtilisateur($visiteur,$mois)
+        {
+            $requete13 = "select quantite from lignefraisforfait where idFraisForfait = 'KM' and mois = '$mois'  and idVisiteur = '$visiteur'";
+            $query = PdoGsb::$monPdo->query($requete13) ;
+            $data = $query->fetch();
+            return $data['quantite'];
+        }
+        public function getValeurFraisNuiteHotelUtilisateur($visiteur,$mois)
+        {
+            $requete14 = "select quantite from lignefraisforfait where idFraisForfait = 'NUI' and mois = '$mois'  and idVisiteur = '$visiteur'";
+            $query = PdoGsb::$monPdo->query($requete14) ;
+            $data = $query->fetch();
+            return $data['quantite'];
+        }
+        public function getValeurFraisRepasRestaurantUtilisateur($visiteur,$mois)
+        {
+            $requete15 = "select quantite from lignefraisforfait where idFraisForfait = 'REP' and mois = '$mois'  and idVisiteur = '$visiteur'";
+            $query = PdoGsb::$monPdo->query($requete15) ;
+            $data = $query->fetch();
+            return $data['quantite'];
+        }
+         public function MiseAjourMontantValide($montant,$visiteur,$mois)
+         {
+            $requete16 ="UPDATE fichefrais set montantValide='$montant' where fichefrais.idVisiteur= '$visiteur' and fichefrais.mois='$mois'";
+            PdoGsb::$monPdo->exec($requete16);
+         }
+         public function getValeurFraisHorsForfaitUtilisateur($visiteur,$mois)
+         {
+            $requete16 ="select sum(montant)as lemontant from lignefraishorsforfait where idVisiteur = '$visiteur' and mois='$mois'";
+            $query = PdoGsb::$monPdo->query($requete16) ;
+            $data = $query->fetch();
+            return $data['lemontant'];
+         }
+         
  /******************************************************************************************************************************/       
         public function getLesVisiteursDisponibles()
         {
