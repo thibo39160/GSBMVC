@@ -463,6 +463,27 @@ class PdoGsb{
             $data = $query->fetch();
             return $data['lemontant'];
          }
+         public function getUtilisateurMotDePasseCryptage()
+         {
+            $requete17 = "select login,mdp from utilisateur ";
+            $result = PdoGsb::$monPdo->query($requete17);
+            $ensemble =array();
+            $laLigne = $result->fetch();
+            while($laLigne != null)
+               {
+               $login = $laLigne['login'];
+               $mdp = $laLigne['mdp'];
+                $ensemble[$login]=array(
+		     "login"=>$login,"mdp"=>$mdp);
+                $laLigne = $result->fetch();
+               }
+               return $ensemble;
+         }
+         public function MiseAjourCryptageDansBaseDeDonnée($MonCryptage,$LeLogin)
+         {
+           $requete18 = "update utilisateur set mdp = '$MonCryptage' where login = '$LeLogin' ";
+	   PdoGsb::$monPdo->exec($requete18);  
+         }
          
  /******************************************************************************************************************************/       
         public function getLesVisiteursDisponibles()

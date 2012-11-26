@@ -1,5 +1,5 @@
 
-<form method="POST"  action="index.php?uc=validation&action=validation"> 
+<form method="POST"  action="index.php?uc=validation&action=Actualisation"> 
     <?php
     echo'La Suppression dela ligne Hors forfait à bien été prise en compte';
     ?>
