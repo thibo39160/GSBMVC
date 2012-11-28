@@ -37,19 +37,16 @@ switch($action){
 		include("vues/v_selection.php");
                 
                 
-                $infosFrais=$pdo->getLesInfosFrais($levisiteur,$leMois);
-                
-                foreach ($infosFrais as $lesinfos)
-                {
-                    $montantValide=$lesinfos['montantValide'];
-                    $dateMofid=$lesinfos['dateModif'];
-                }
-                
+                /*$infosFrais=$pdo->getLesInfosFrais($levisiteur,$leMois);
 
+                $montantValide=$infosFrais['montantValide'];
+                $dateMofid=$infosFrais['dateModif'];*/
+                
+               
 
-                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($VisiteurID,$mois);
-		$lesFraisForfait= $pdo->getLesFraisForfait($VisiteurID,$mois);
-		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($VisiteurID,$mois);
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($levisiteur,$leMois);
+		$lesFraisForfait= $pdo->getLesFraisForfait($levisiteur,$leMois);
+		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($levisiteur,$leMois);
 		$numAnnee =substr( $leMois,0,4);
 		$numMois =substr( $leMois,4,2);
 		$libEtat = $lesInfosFicheFrais['libEtat'];

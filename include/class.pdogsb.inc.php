@@ -105,7 +105,8 @@ class PdoGsb{
                         $dateModif= $laLigne['dateModif'];
                         $lesinfos[$montantValide]=array("montantValide"=>$montantValide,"dateModif"=>$dateModif);
                         $laLigne = $res->fetch(); 
-                }                
+                }     
+                print_r($lesinfos);
                 return $lesinfos;     
         }
          
