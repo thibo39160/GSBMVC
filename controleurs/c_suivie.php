@@ -7,29 +7,49 @@ switch($action){
                 // Requete pour infos visiteur VA
                 $lesvisiteurs=$pdo->getInfosVisiteurValide();
                 $lescles2 = array_keys($lesvisiteurs);
-                $utilisateurASelectionner=$lescles2[0];
-               
-                //Requete pour les mois
-                global $Visiteur;
-                echo $visiteur;
-                $lesMois=$pdo->getLesMoisDisponiblesVisiteurValide($Visiteur);
-		// Afin de sélectionner par défaut le dernier mois dans la zone de liste
-		// on demande toutes les clés, et on prend la première,
-		// les mois étant triés décroissants
-		$lesCles = array_keys($lesMois);
-		$moisASelectionner = $lesCles[0];
+                $utilisateurASelectionner=$lescles2[0];                 
+                
+                //Requete pour les mois 
+                $lesMois=$pdo->getLesMoisDisponiblesVisiteurValide();                                
+                // Afin de sélectionner par défaut le dernier mois dans la zone de liste
+                // on demande toutes les clés, et on prend la première,
+                // les mois étant triés décroissants
+                $lesCles = array_keys($lesMois);
+                $moisASelectionner = $lesCles[0];
 		include("vues/v_selection.php");
 		break;
 	}
 	case 'montantValidee':{
 		$leMois = $_REQUEST['lstMois']; 
-                global $Visiteur;
-		$lesMois=$pdo->getLesMoisDisponibles($Visiteur);
-                $moisASelectionner = $leMois;
+                $levisiteur = $_REQUEST['lstVisiteur'];                
+                // Requete pour infos visiteur VA
+                $lesvisiteurs=$pdo->getInfosVisiteurValide();
+                $lescles2 = array_keys($lesvisiteurs);
+                $utilisateurASelectionner=$lescles2[0]; 
+
+                //Requete pour les mois 
+                $lesMois=$pdo->getLesMoisDisponiblesVisiteurValide();                                
+                // Afin de sélectionner par défaut le dernier mois dans la zone de liste
+                // on demande toutes les clés, et on prend la première,
+                // les mois étant triés décroissants
+                $lesCles = array_keys($lesMois);
+                $moisASelectionner = $lesCles[0];
 		include("vues/v_selection.php");
-                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($Visiteur,$leMois);
-		$lesFraisForfait= $pdo->getLesFraisForfait($Visiteur,$leMois);
-		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($idVisiteur,$leMois);
+                
+                
+                $infosFrais=$pdo->getLesInfosFrais($levisiteur,$leMois);
+                
+                foreach ($infosFrais as $lesinfos)
+                {
+                    $montantValide=$lesinfos['montantValide'];
+                    $dateMofid=$lesinfos['dateModif'];
+                }
+                
+
+
+                $lesFraisHorsForfait = $pdo->getLesFraisHorsForfait($VisiteurID,$mois);
+		$lesFraisForfait= $pdo->getLesFraisForfait($VisiteurID,$mois);
+		$lesInfosFicheFrais = $pdo->getLesInfosFicheFrais($VisiteurID,$mois);
 		$numAnnee =substr( $leMois,0,4);
 		$numMois =substr( $leMois,4,2);
 		$libEtat = $lesInfosFicheFrais['libEtat'];
@@ -37,7 +57,7 @@ switch($action){
 		$nbJustificatifs = $lesInfosFicheFrais['nbJustificatifs'];
 		$dateModif =  $lesInfosFicheFrais['dateModif'];
 		$dateModif =  dateAnglaisVersFrancais($dateModif);
-		include("vues/v_monantValidee.php");
+		include("vues/v_montantValidee.php");
 	}
 }
 

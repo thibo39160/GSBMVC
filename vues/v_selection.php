@@ -1,4 +1,4 @@
-﻿ <div id="contenu">
+ <div id="contenu">
       <h2>Liste des visiteurs ayant des fiches de frais validées et non remboursées</h2>
       <h3>Visiteur à sélectionner : </h3>
       <form action="index.php?uc=suivie&action=montantValidee" method="post">
@@ -8,22 +8,23 @@
             <p>
 	 
         <label for="lstVisiteur" accesskey="n">Visiteur : </label>
-        <select id="lstVisiteur" name="lstVisiteur" onchange='this.form.submit()'>
+        <select id="lstVisiteur" name="lstVisiteur">
             <?php
 			foreach ($lesvisiteurs as $unVisiteur)
 			{
                                 
-				$Visiteur = $unVisiteur['id'];
+				$VisiteurID = $unVisiteur['id'];
                                 $VisiteurNom = $unVisiteur['nom'];                               
                                 
-				if($Visiteur == $utilisateurASelectionner){
+				if($VisiteurID == $utilisateurASelectionner){
 				?>
-				<option selected value="<?php echo $Visiteur ?>"><?php echo  $Visiteur." ".$VisiteurNom ?> </option>
-				<?php 
+				<option selected value="<?php echo $VisiteurID ?>"><?php echo  $VisiteurID." ".$VisiteurNom ?> </option>
+                                <?php
 				}
 				else{ ?>
-				<option value="<?php echo $Visiteur ?>"><?php echo  $Visiteur." ".$VisiteurNom ?> </option>
-				<?php 
+				<option value="<?php echo $VisiteurID ?>"><?php echo  $VisiteurID." ".$VisiteurNom ?> </option>
+                                <?php
+
 				}
 			
 			}
@@ -45,8 +46,6 @@
                                 $mois = $unMois['mois'];
 				$numAnnee =  $unMois['numAnnee'];
 				$numMois =  $unMois['numMois'];
-                                $dateModif = $unMois['dateModif'];
-                                $montantValide = $unMois['montantValide'];
 				if($mois == $moisASelectionner){
 				?>
 				<option selected value="<?php echo $mois ?>"><?php echo  $numMois."/".$numAnnee ?> </option>
