@@ -118,29 +118,36 @@ class PdoGsb{
  * @param $mdp
  * @return l'id, le nom et le prénom sous la forme d'un tableau associatif 
 */
-	public function getInfosVisiteur($login, $mdp){
-            
-            $req = "select type from utilisateur where utilisateur.login='".$login."' and utilisateur.mdp='".$mdp."'";
-            $rs = PdoGsb::$monPdo->query($req);
-            $type = $rs->fetch(pdo::FETCH_ASSOC);
-            
-            if($type['type'] =="C")
+	public function getInfosVisiteur($login, $mdp)
+      {
+            $ligne="";
+            if($login ==" " || $mdp==" ")
             {
-               $requete = "select gestionnaire.id as id, gestionnaire.nom as nom, gestionnaire.prenom as prenom from gestionnaire 
-	       where gestionnaire.login='".$login."'";
-               $rs1 = PdoGsb::$monPdo->query($requete);
-               $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
-               $ligne['type']="C";
+                $ligne = FALSE;
             }
-            else if($type['type'] =="V")
+            else
             {
-               $requete = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
-	       where visiteur.login='".$login."'";
-               $rs1 = PdoGsb::$monPdo->query($requete);
-               $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
-               $ligne['type']="V";
-            }
-            
+                $req = "select type from utilisateur where utilisateur.login='".$login."' and utilisateur.mdp='".$mdp."'";
+                $rs = PdoGsb::$monPdo->query($req);
+                $type = $rs->fetch(pdo::FETCH_ASSOC);
+
+                if($type['type'] =="C")
+                {
+                   $requete = "select gestionnaire.id as id, gestionnaire.nom as nom, gestionnaire.prenom as prenom from gestionnaire 
+                   where gestionnaire.login='".$login."'";
+                   $rs1 = PdoGsb::$monPdo->query($requete);
+                   $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
+                   $ligne['type']="C";
+                }
+                else if($type['type'] =="V")
+                {
+                   $requete = "select visiteur.id as id, visiteur.nom as nom, visiteur.prenom as prenom from visiteur 
+                   where visiteur.login='".$login."'";
+                   $rs1 = PdoGsb::$monPdo->query($requete);
+                   $ligne = $rs1->fetch(pdo::FETCH_ASSOC);
+                   $ligne['type']="V";
+                }
+            } 
 		return $ligne;
 	}
 

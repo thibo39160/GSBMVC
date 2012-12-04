@@ -11,12 +11,19 @@ switch($action){
 	case 'valideConnexion':{
 		$login = $_REQUEST['login'];
 		$mdp = $_REQUEST['mdp'];
+                
+                
+                
                 //ici apel du cryptage du mot de passe envoyer au programe
                 
                 $mdpCrypte = crypt($login,$mdp);
                 
-		$visiteur = $pdo->getInfosVisiteur($login,$mdpCrypte);
+                $addlogin= addslashes($login);
+                $addmdpCrypte = addslashes($mdpCrypte);
+                
+		$visiteur = $pdo->getInfosVisiteur($addlogin,$addmdpCrypte);
 		if(!is_array( $visiteur)){
+                    
 			ajouterErreur("Login ou mot de passe incorrect");
 			include("vues/v_erreurs.php");
 			include("vues/v_connexion.php");

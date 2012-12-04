@@ -9,12 +9,16 @@
       </div>  
         <ul id="menuList">
 			<li >
+                       <?php
+                       if($_SESSION['type']=='V')
+                            {
+                       ?>
 				  Visiteur :<br>
 				<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
 			</li>
-                        <?php
-                        if($_SESSION['type']=='V')
-                        {?>
+                        
+                        
+                       
                             <li class="smenu">
               <a href="index.php?uc=gererFrais&action=saisirFrais" title="Saisie fiche de frais ">Saisie fiche de frais</a>
            </li>
@@ -25,8 +29,14 @@
               <a href="index.php?uc=connexion&action=deconnexion" title="Se déconnecter">Déconnexion</a>
            </li>
                         <?php }
-            else { 
-                    ?>
+            else 
+                { 
+                ?>
+                <li>
+		Comptable :<br>
+		<?php echo $_SESSION['prenom']."  ".$_SESSION['nom']  ?>
+			</li>
+                   
            <li class="smenu">
               <a href="index.php?uc=suivie&action=selectionVisiteur" title="Suivie fiches de frais ">Suivie fiches de frais</a>
            </li>
