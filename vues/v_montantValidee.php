@@ -4,6 +4,15 @@
     <p>
         Montant validé : <?php echo $montantValide;?>                
     </p>
+    
+   
+    
+    <form method="POST" action="index.php?uc=suivie&action=selectionVisiteur&action2=Payer">   
+    <input type="HIDDEN" name="id" value="<?php echo $levisiteur ?>" />
+    <input type="HIDDEN" name="mois" value="<?php echo $leMois ?>" />
+    <input type='Submit' value='Payer cette fiche' style='left: 40%; position: relative'>
+    </form>
+    
   	<table class="listeLegere">
   	   <caption>Quantités des éléments forfaitisés</caption>
         <tr>

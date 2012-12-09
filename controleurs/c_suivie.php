@@ -1,5 +1,15 @@
 <?php
 include("vues/v_sommaire.php");
+ 
+if(isset($_GET['action2']) && $_GET['action2']=="Payer")
+    {
+        $pdo->majEtatFicheFrais($_POST['id'],$_POST['mois'],"RB");
+        ?>
+        <script>alert('La fiche de frais a été payée avec succès !');
+            window.location='index.php?uc=suivie&action=selectionVisiteur';</script>
+           <?php
+    }
+
 $action = $_REQUEST['action'];
 $idVisiteur = $_SESSION['idVisiteur'];
 switch($action){
