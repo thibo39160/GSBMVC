@@ -29,6 +29,7 @@
         <label for="lstMois" accesskey="n">Mois : </label>
         <select id="lstMois" name="lstMois">
             <?php
+            
 			foreach ($MoisAvalider as $unMois)
 			{
 			    $mois = $unMois['mois'];
