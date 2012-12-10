@@ -12,16 +12,20 @@ switch($action){
 		$login = $_REQUEST['login'];
 		$mdp = $_REQUEST['mdp'];
                 
+                 //ici apel du cryptage du mot de passe envoyer au programe
+
+                /*$mdpCrypte =  $pdo->getUtilisateurMotDePasseCryptage();
+                foreach ($mdpCrypte as $micka)
+			{
+                    $unmotdepasse = $micka['mdp'];
+                    $unUtilisateur = $micka['login'];
+                    $cryptage = crypt($login,$unmotdepasse);
+                    $pdo->MiseAjourCryptageDansBaseDeDonnée($cryptage,$unUtilisateur);
+                }*/
                 
+                $cryptage = crypt($login,$mdp);
                 
-                //ici apel du cryptage du mot de passe envoyer au programe
-                
-                $mdpCrypte = crypt($login,$mdp);
-                
-                $addlogin= addslashes($login);
-                $addmdpCrypte = addslashes($mdpCrypte);
-                
-		$visiteur = $pdo->getInfosVisiteur($addlogin,$addmdpCrypte);
+		$visiteur = $pdo->getInfosVisiteur($login,$cryptage);
 		if(!is_array( $visiteur)){
                     
 			ajouterErreur("Login ou mot de passe incorrect");
