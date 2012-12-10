@@ -56,7 +56,11 @@ class PdoGsb{
 */
        public function getInfosVisiteurValide(){
            
-            $requete = "select distinct visiteur.id, visiteur.nom, visiteur.prenom from visiteur INNER JOIN fichefrais on visiteur.id = fichefrais.idVisiteur where idEtat='VA' or idEtat='RB' order by visiteur.id asc";
+            $requete = "Select id,nom,prenom,mois,idEtat 
+                        from visiteur Inner join fichefrais on fichefrais.idVisiteur = visiteur.id 
+                        Where fichefrais.idEtat='VA' 
+                        OR 
+                        (fichefrais.idEtat='RB' AND  MONTH(CURRENT_DATE)-MONTH(dateModif)<=4 AND CURRENT_DATE-dateModif<1)";
             $rs1 = PdoGsb::$monPdo->query($requete);
             $ensembleUtilisateur = array();
             $laLigne = $rs1->fetch();
@@ -75,7 +79,9 @@ class PdoGsb{
 //---------------------------------------------------------------------------------------
         
         public function getLesMoisDisponiblesVisiteurValide() {
-                $req = "select distinct fichefrais.mois as mois,fichefrais.dateModif,fichefrais.montantValide,fichefrais.idEtat from fichefrais where fichefrais.idEtat='VA' or idEtat='RB' order by fichefrais.mois desc";
+                $req = "select distinct fichefrais.mois as mois,fichefrais.dateModif,fichefrais.montantValide,fichefrais.idEtat from fichefrais Where fichefrais.idEtat='VA' 
+                        OR 
+                        (fichefrais.idEtat='RB' AND  MONTH(CURRENT_DATE)-MONTH(dateModif)<=4 AND CURRENT_DATE-dateModif<1)";
 		$res = PdoGsb::$monPdo->query($req);
                 $lesMois =array();
                 $laLigne = $res->fetch();
