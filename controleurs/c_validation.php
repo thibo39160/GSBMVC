@@ -132,10 +132,9 @@ switch($action){
                 include("vues/v_validationComptable.php"); 
                 echo'Montant Valide: '.$MontantTotalValide;              
                 include("vues/v_listeFraisForfaitComptable.php");
-                include("vues/v_listeFraisHorsForfaitComptable.php");              
-                
-                break;
+                include("vues/v_listeFraisHorsForfaitComptable.php");               
                 }
+                break;
         }       
          case 'validationComptable':
         {
